@@ -231,21 +231,16 @@ function Home() {
         console.log(err)
       })
   }
-  const handleUpdate = async (updateId) => {
-    console.log(updateId)
+  const handleUpdate = async (newID) => {
+    console.log(newID)
     if (updatedTitle || updatedDesc) {
       await axios
-        .put("http://localhost:4000/api/update/" + updateId, { heading: updatedTitle, description: updatedDesc })
-        .then((response) => {
-          // console.log(response)
-          todo.filter((item) => {
-            // console.log(item)
-            if (item._id === response.data._id) {
-              console.log(item)
-            }
-            return null
-          })
-          // setTodo(todo)
+        .put("http://localhost:4000/api/update/" + newID, { heading: updatedTitle, description: updatedDesc })
+        .then(() => {
+          setTodo(todo)
+          setUpdate(false)
+          setUpdatedTitle("")
+          setUpdatedDesc("")
         })
         .catch((err) => {
           console.log(err)
@@ -287,7 +282,6 @@ function Home() {
                     onClick={() => {
                       setUpdate(true)
                       setUpdateId(item._id)
-                      // console.log(item)
                     }}
                     src={Edit}
                   />
@@ -322,7 +316,7 @@ function Home() {
                     <Post
                       style={{ zIndex: "5", borderRadius: "5px", width: "70px" }}
                       onClick={() => {
-                        handleUpdate(item._id)
+                        handleUpdate(updateId)
                       }}
                     >
                       Add
