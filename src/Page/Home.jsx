@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import Back from "../Images/girl.jpg"
+import Back from "../Images/car.jpg"
 import Edit from "../Images/edit.png"
 import Delete from "../Images/delete.png"
 // import Comment from "../Images/comment.png"
@@ -10,7 +10,7 @@ const Container = styled.div`
   width: 100%;
   min-height: 92vh;
   background-image: url(${Back});
-  background-position: center right;
+  background-position: center;
   background-size: cover;
   padding: 20px;
   position: relative;
@@ -233,7 +233,7 @@ function Home() {
   }
   const handleUpdate = async (newID) => {
     console.log(newID)
-    if (updatedTitle || updatedDesc) {
+    if (updatedTitle && updatedDesc) {
       await axios
         .put("http://localhost:4000/api/update/" + newID, { heading: updatedTitle, description: updatedDesc })
         .then(() => {
@@ -246,7 +246,7 @@ function Home() {
           console.log(err)
         })
     } else {
-      alert("kindly provide either title or description")
+      alert("kindly provide both title description")
     }
   }
   // beginning of the main app
