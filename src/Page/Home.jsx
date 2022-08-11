@@ -1,11 +1,12 @@
+// Importing some dependencies
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import Back from "../Images/car.jpg"
 import Edit from "../Images/edit.png"
 import Delete from "../Images/delete.png"
-// import Comment from "../Images/comment.png"
 import axios from "axios"
 
+// CSS styled components section
 const Container = styled.div`
   width: 100%;
   min-height: 92vh;
@@ -171,6 +172,7 @@ const Trigger = styled.div`
   flex-direction: column;
 `
 
+// Main App Start Here
 function Home() {
   // state management
   const [todo, setTodo] = useState([])
@@ -190,7 +192,7 @@ function Home() {
     getTodo()
   }, [todo])
 
-  // const [IsComplete, setIsComplete] = useState(false)
+  // Toggling my Todo between complete and incomplete
   const handleComplete = async (id) => {
     const Data = await axios.put("http://localhost:4000/api/complete/" + id)
 
@@ -204,6 +206,8 @@ function Home() {
       })
     )
   }
+
+  // Creating a new Todo item
   const handlePost = async () => {
     if (title && description) {
       await axios
@@ -221,6 +225,7 @@ function Home() {
     }
   }
 
+  // Deleting a todo item from the list of Todo.
   const handleDelete = async (id) => {
     await axios
       .delete("http://localhost:4000/api/delete/" + id)
@@ -231,6 +236,8 @@ function Home() {
         console.log(err)
       })
   }
+
+  // Updating a Todo from the list of available todo's
   const handleUpdate = async (newID) => {
     console.log(newID)
     if (updatedTitle && updatedDesc) {
@@ -249,19 +256,18 @@ function Home() {
       alert("kindly provide both title description")
     }
   }
-  // beginning of the main app
+
+  // Out Todo apllication render the following
   return (
     <Container>
       <Wrapper>
         <Title>Todo App</Title>
         <TodoList>
           {/* Mapping through my todo list items */}
-
-          {/* Mapping through my todo list Items */}
           {todo.map((item) => {
             return (
               <List key={item._id}>
-                {/* Each items check box */}
+                {/*The box is the round shape on each todo to signify complete status, ISC is use to update css on current todo status while the handleComplete takes the item ID as parameter for further manipulation*/}
                 <Box
                   Isc={item.isComplete}
                   onClick={() => {
@@ -269,15 +275,15 @@ function Home() {
                   }}
                 ></Box>
 
-                {/* div containing both the todo item and its descrition */}
+                {/* Its the middle section of the todo containing both the todo tittle and todo description.*/}
                 <Initial>
-                  <Span>{item.heading}</Span>
-                  <Span style={{ fontSize: "0.7rem" }}>{item.description}</Span>
+                  <Span style={{ fontWeight: "500" }}>{item.heading}</Span>
+                  <Span style={{ fontSize: "0.7rem", width: "300px" }}>{item.description}</Span>
                 </Initial>
 
-                {/* div containing comment edit and delete button */}
+                {/* Last contain edit and delete button for updating and deleting selected Todo*/}
                 <Last>
-                  {/* <Change src={Comment} /> */}
+                  {/* The setUpdate-true help to trigger the update page containing a form field while the setUpdateId send the todo ID for further nanipulation*/}
                   <Change
                     onClick={() => {
                       setUpdate(true)
@@ -285,6 +291,7 @@ function Home() {
                     }}
                     src={Edit}
                   />
+                  {/* This delete the todo by teiggering the handleDelete function*/}
                   <Change
                     onClick={() => {
                       handleDelete(item._id)
@@ -293,10 +300,12 @@ function Home() {
                   />
                 </Last>
 
-                {/* A popup buttton activation to update todo items and description */}
+                {/* A popup buttton activation to update todo items and description its visibility is dependent on "UPDATE" set true*/}
                 {update ? (
                   <Trigger>
+                    {/* A simple title label */}
                     <Title style={{ paddingTop: "80px" }}>Update Current Todo</Title>
+                    {/* The title to be updated to */}
                     <AddInput
                       style={{ zIndex: "5", marginBottom: "5px", width: "300px" }}
                       value={updatedTitle}
@@ -305,6 +314,7 @@ function Home() {
                         setUpdatedTitle(event.target.value)
                       }}
                     />
+                    {/* The description to be updated to */}
                     <AddDesc
                       style={{ zIndex: "5", marginBottom: "5px", width: "300px" }}
                       value={updatedDesc}
@@ -313,6 +323,7 @@ function Home() {
                         setUpdatedDesc(event.target.value)
                       }}
                     />
+                    {/* A Button to send information for futher manipulation */}
                     <Post
                       style={{ zIndex: "5", borderRadius: "5px", width: "70px" }}
                       onClick={() => {
@@ -321,6 +332,7 @@ function Home() {
                     >
                       Add
                     </Post>
+                    {/* A cancel button to cancel the whole process */}
                     <Cancel
                       onClick={() => {
                         setUpdate(false)
@@ -336,7 +348,7 @@ function Home() {
             )
           })}
 
-          {/* outside todo item, a add button to add new todo to list of todo */}
+          {/*This is outside todo List, a add button to add new todo to list of todo */}
         </TodoList>
         <AddItem>
           <Add
@@ -347,13 +359,13 @@ function Home() {
           >
             +
           </Add>
+          {/* An button activated input and description field */}
           <AddInput
             Dsp={addNew}
             value={title}
             type="text"
             placeholder="Add New Item"
             onChange={(event) => {
-              // console.log(event.target.value)
               setTitle(event.target.value)
             }}
           />
@@ -366,6 +378,7 @@ function Home() {
               setDescription(event.target.value)
             }}
           />
+          {/* This ost item in both input and descriptionfield for further processing */}
           <Post Dsp={addNew} style={{ marginLeft: "10px", fontSize: "1rem" }} onClick={handlePost}>
             Post
           </Post>
